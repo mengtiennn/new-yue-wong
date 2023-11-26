@@ -6,6 +6,46 @@ const headerList = reactive([
   { title: 'MENU' },
   { title: 'CONTACT' }
 ])
+const footerList1 = reactive([
+  { title: 'Contact Us', content: '(646) 609-2331' },
+  { title: 'Address', content: '60 Bayard St, New York,<hr> NY 10013' },
+])
+const footerList2 = reactive([
+  { title: 'Dine-in', content: ['Monday-Thursday   9AM - 9PM', 'Friday-Sunday         9AM - 10PM'] },
+  { title: 'Takeout', content: ['Monday-Thursday    9AM - 9PM', 'Friday-Sunday          9AM - 10PM'] },
+])
+const iconList = reactive([
+  { img: '/img/icon/ig.svg' },
+  { img: '/img/icon/fb.svg' },
+  { img: '/img/icon/google.svg' },
+  { img: '/img/icon/yelp.svg' },
+])
+// Instagram✅https://www.instagram.com/newyuewongrestaurant/
+
+// Facebook✅https://www.facebook.com/profile.php?id=61553334060030
+
+// Google✅https://g.page/r/Cd5cXREYwJlEEB0/review
+
+// Yelp✅https://www.yelp.com/biz/new-yuewong-restaurant-new-york
+
+const goOutWeb = (index) => {
+  switch (index) {
+    case 0:
+      window.open('https://www.instagram.com/newyuewongrestaurant/', '_blank');
+      break;
+    case 1:
+      window.open('https://www.facebook.com/profile.php?id=61553334060030', '_blank');
+      break;
+    case 2:
+      window.open('https://g.page/r/Cd5cXREYwJlEEB0/review', '_blank');
+      break;
+    case 3:
+      window.open('https://www.yelp.com/biz/new-yuewong-restaurant-new-york', '_blank');
+      break;  
+    default:
+      break;
+  }
+}
 const email = ref('')
 </script>
 <template>
@@ -88,9 +128,33 @@ const email = ref('')
     </div>
   </div>
   <div class="w-screen flex">
-    <img src="@/assets/img/footer.png" alt="">
-    <div class="bg-[#FFD230] w-full px-[74px] py-[98px]">
-
+    <img class="footerImg" src="@/assets/img/footer.png" alt="">
+    <div class="bg-[#FFD230] w-full px-[74px] py-[98px] footerContent">
+      <div class="content">
+        <div class="area">
+          <div v-for="(item, index) in footerList1" :key="index" class="areaItem">
+            <div class="title">{{ item.title }}</div>
+            <div class="text" v-html="item.content" />
+          </div>
+        </div>
+        <div class="area2">
+          <div class="area2Title">Opening Hours</div>
+          <div v-for="(item, index) in footerList2" :key="index"  class="area2Item">
+            <div class="title">{{ item.title }}</div>
+            <div class="area2ContentItem">
+              <div v-for="(item2, index2) in item.content" :key="index2" class="contentItem">
+                <div class="text">{{ item2 }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="link">
+        <div class="linkList">
+          <img @click="goOutWeb(index)" v-for="(item, index) in iconList" :key="index" :src="item.img" alt="">
+        </div>
+        <div class="remind">© 2023 NEW YUE WONG RESTAURANT. ALL RIGHTS RESERVED.</div>
+      </div>
     </div>
   </div>
 </template>
@@ -112,5 +176,77 @@ const email = ref('')
   border-right: 2px solid black;
   border-bottom: 2px solid black;
   padding: 10px;
+}
+.footerImg{
+  width: 40%;
+  object-fit: cover;
+}
+.footerContent{
+  display: flex;
+  flex-direction: column;
+
+  .content{
+    display: flex;
+    justify-content: space-evenly;
+    .area{
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 40%;
+      .areaItem{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        .title{
+          font-size: 20px;
+          font-weight: bold
+        }
+      }
+    }
+    .area2{
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 60%;
+      .area2Title{
+        font-size: 20px;
+        font-weight: bold
+      }
+      .area2Item{
+        display: flex;
+        align-items: center;
+        .area2ContentItem{
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          .contentItem{
+            display: flex;
+            
+          }
+        }
+        .title{
+          font-size: 18px;
+          font-weight: 600;
+          width: 100px;
+        }
+        .text{
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  .link{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    .linkList{
+      display: flex;
+      gap: 10px;
+    }
+    .remind{
+      font-size: 14px;
+    }
+  }
 }
 </style>
