@@ -1,5 +1,14 @@
 <script setup>
 import { ref, onMounted, reactive, computed } from 'vue'
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import { getAssetsFile } from '@/utils/commonUse'
+components: {
+  Carousel,
+  Slide,
+  Pagination,
+  Navigation
+}
 const headerList = reactive([
   { title: 'ABOUT' },
   { title: 'GALLERY' },
@@ -47,6 +56,15 @@ const goOutWeb = (index) => {
   }
 }
 const email = ref('')
+const showBigPhoto = ref(false)
+const p = ref('')
+const nowPic = computed(() => {
+  return getAssetsFile(`${p.value}.png`)
+})
+const show = (type, idx) => {
+  showBigPhoto.value = true
+  p.value = type + idx.toString()
+}
 </script>
 <template>
   <div class="w-screen h-screen bg-[#FFD230] flex flex-col pt-[100px] items-center justify-end">
@@ -83,15 +101,33 @@ const email = ref('')
         <img src="@/assets/img/text1.png" alt="img">
         <div class="bg-[#FFD230] text-[24px] font-bold py-[13px] px-[20px] text-center mt-[20px]">See More</div>
       </div>
-      <div class="w-[40%] bg-[#FFD230] p-[49px]">
-        這邊搞輪播
-    </div>
+      <div class="w-[60%] bg-[#FFD230] p-[49px]">
+        <Carousel :items-to-show="2.5" :wrap-around="true">
+          <Slide v-for="slide in 6" :key="slide" @click="show('c', slide)">
+            <div class="carousel__item">
+              <img :src="getAssetsFile(`c${slide}.png`)" class="w-[200px]">
+            </div>
+          </Slide>
+          <template #addons>
+            <Navigation />
+          </template>
+        </Carousel>
+      </div>
     </div>
   </div>
   <div class="flex w-screen justify-center pt-[154px] pb-[111px]">
     <div class="flex w-[70%] gap-[80px] justify-center items-center">
-      <div class="w-[40%] bg-[#FFD230] p-[49px]">
-        這邊搞輪播
+      <div class="bg-[#FFD230] p-[30px] w-[60%]">
+        <Carousel :items-to-show="2.5" :wrap-around="true">
+          <Slide v-for="slide in 11" :key="slide" @click="show('m', slide)">
+            <div class="carousel__item">
+              <img :src="getAssetsFile(`m${slide}.png`)" class="w-[200px]">
+            </div>
+          </Slide>
+          <template #addons>
+            <Navigation />
+          </template>
+        </Carousel>
       </div>
       <div>
         <img src="@/assets/img/text2.png" alt="img">
@@ -150,12 +186,16 @@ const email = ref('')
         </div>
       </div>
       <div class="link">
-        <div class="linkList">
+        <div class="linkList cursor-pointer">
           <img @click="goOutWeb(index)" v-for="(item, index) in iconList" :key="index" :src="item.img" alt="">
         </div>
         <div class="remind">© 2023 NEW YUE WONG RESTAURANT. ALL RIGHTS RESERVED.</div>
       </div>
     </div>
+  </div>
+  <div class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center pic" v-if="showBigPhoto">
+    <div class="absolute right-10 top-5 text-xl font-semibold z-20 text-white cursor-pointer" @click="showBigPhoto = false">CLOSE</div>
+    <img :src="nowPic" class="w-[70vw] h-[80vh] object-contain">
   </div>
 </template>
 <style lang="scss" scoped>
@@ -248,5 +288,14 @@ const email = ref('')
       font-size: 14px;
     }
   }
+}
+:deep(.carousel__prev) {
+  left: -45px;
+}
+:deep(.carousel__next) {
+  right: -45px;
+}
+.pic {
+  background-color: rgba(0,0,0,0.7);
 }
 </style>
