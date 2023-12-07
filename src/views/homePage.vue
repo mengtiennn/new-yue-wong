@@ -67,36 +67,36 @@ const show = (type, idx) => {
 }
 </script>
 <template>
-  <div class="w-screen h-screen bg-[#FFD230] flex flex-col pt-[100px] items-center justify-end">
-    <div class="flex flex-col items-center">
-      <div class="font-bold text-[64px] flex flex-col items-center">
+  <div class="w-screen bg-[#FFD230] flex flex-col pt-[100px] items-center justify-end">
+    <div class="flex flex-col items-center titleC">
+      <div class="font-bold text-[64px] flex flex-col items-center titleCText">
         <span>NEW YUE WONG RESTAURANT</span>
         <span>裕旺大饭店</span>
       </div>
-      <div class="flex gap-[46px] mt-[30px] mb-[20px]">
-        <div v-for="(item, idx) in headerList" :key="idx" class="py-[15px] px-[23px] bg-white rounded-[50px]">
+      <div class="flex gap-[46px] mt-[30px] mb-[30px] titleCOption">
+        <div v-for="(item, idx) in headerList" :key="idx" class="py-[15px] px-[23px] bg-white rounded-[50px] font-bold cursor-pointer">
           {{ item.title }}
         </div>
       </div>
       <img src="@/assets/img/img1.png" alt="img" class="">
     </div>
   </div>
-  <div class="flex w-screen justify-center pt-[154px] pb-[111px]">
-    <div class="flex w-[70%] gap-[80px] justify-center">
+  <div class="flex w-screen justify-center pt-[154px] pb-[111px] about">
+    <div class="flex w-[70%] gap-[80px] justify-center aboutC">
       <img src="@/assets/img/img2.png" alt="img">
-      <div class="w-[40%]">
-        <div class="font-bold text-[32px] mb-[30px] gap-3 flex">
+      <div class="w-[40%] aboutCArea">
+        <div class="font-bold text-[32px] mb-[30px] gap-3 flex aboutCTitle">
           <span>ABOUT</span>
           <span class="text-[#FFD230]">NYW</span>
         </div>
-        <div class="text-[20px] leading-loose">
+        <div class="text-[20px] leading-loose aboutCText">
           Welcome to New Yue Wong in NYC's Chinatown since 2011! Try our famous Peking Duck—crispy, succulent, and full of authentic flavor. Our spot blends tradition with innovation for a memorable dining experience that captures the spirit of Chinatown in every delicious bite!
         </div>
     </div>
     </div>
   </div>
-  <div class="flex w-screen justify-center pt-[154px] pb-[111px]">
-    <div class="flex w-[70%] gap-[80px] justify-center items-center">
+  <div class="flex w-screen justify-center pt-[154px] pb-[111px] explore">
+    <div class="flex w-[70%] gap-[80px] justify-center items-center exploreC">
       <div>
         <img src="@/assets/img/text1.png" alt="img">
         <div class="bg-[#FFD230] text-[24px] font-bold py-[13px] px-[20px] text-center mt-[20px]">See More</div>
@@ -114,9 +114,20 @@ const show = (type, idx) => {
         </Carousel>
       </div>
     </div>
+    <div class="exploreCShow">
+      <img src="../assets/img/text3.png" alt="">
+      <div class="exploreCImgList">
+        <div class="list1">
+          <img v-for="item in 3" :key="item" :src="getAssetsFile(`menu/left${item}.jpg`)" alt="">
+        </div>
+        <div class="list2">
+          <img v-for="item in 3" :key="item" :src="getAssetsFile(`menu/right${item}.jpg`)" alt="">
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="flex w-screen justify-center pt-[154px] pb-[111px]">
-    <div class="flex w-[70%] gap-[80px] justify-center items-center">
+  <div class="flex w-screen justify-center pt-[154px] pb-[111px] menu">
+    <div class="flex w-[70%] gap-[80px] justify-center items-center menuC">
       <div class="bg-[#FFD230] p-[30px] w-[60%]">
         <Carousel :items-to-show="2.5" :wrap-around="true">
           <Slide v-for="slide in 11" :key="slide" @click="show('m', slide)">
@@ -133,13 +144,17 @@ const show = (type, idx) => {
         <img src="@/assets/img/text2.png" alt="img">
       </div>
     </div>
+    <div class="menuCShow">
+      <img class="title" src="../assets/img/text4.png" alt="">
+      <img src="../assets/img/menu/menu1.jpg" alt="">
+    </div>
   </div>
-  <div class="bg-[#FFD230] w-screen h-[320px] justify-center items-center flex gap-[80px]">
+  <div class="bg-[#FFD230] w-screen h-[320px] justify-center items-center flex gap-[80px] mail">
     <div class="flex flex-col items-center">
       <span>Stay savory!</span>
       <span>Subscribe for exclusive updates.</span>
     </div>
-    <div class="flex">
+    <div class="flex input">
       <el-input
         v-model="email"
         placeholder="Email"
@@ -149,7 +164,7 @@ const show = (type, idx) => {
       </div>
     </div>
   </div>
-  <div class="flex w-screen justify-center pt-[154px] pb-[111px]">
+  <div class="flex w-screen justify-center pt-[154px] pb-[111px] igFollow">
     <div class="flex w-[70%] gap-[80px] justify-center items-center flex-col">
       <div class="flex font-bold text-[36px]">
         <span>Follow</span>
@@ -163,7 +178,7 @@ const show = (type, idx) => {
       </div>
     </div>
   </div>
-  <div class="w-screen flex">
+  <div class="w-screen flex footer">
     <img class="footerImg" src="@/assets/img/footer.png" alt="">
     <div class="bg-[#FFD230] w-full px-[74px] py-[98px] footerContent">
       <div class="content">
@@ -192,6 +207,30 @@ const show = (type, idx) => {
         <div class="remind">© 2023 NEW YUE WONG RESTAURANT. ALL RIGHTS RESERVED.</div>
       </div>
     </div>
+  </div>
+  <div class="footerC">
+    <img class="footerImg" src="@/assets/img/footer.png" alt="">
+    <div class="linkList cursor-pointer">
+      <img @click="goOutWeb(index)" v-for="(item, index) in iconList" :key="index" :src="item.img" alt="">
+    </div>
+    <div class="area">
+      <div v-for="(item, index) in footerList1" :key="index" class="areaItem">
+        <div class="title">{{ item.title }}</div>
+        <div class="text" v-html="item.content" />
+      </div>
+    </div>
+    <div class="area2">
+      <div class="area2Title">Opening Hours</div>
+      <div v-for="(item, index) in footerList2" :key="index"  class="area2Item">
+        <div class="title">{{ item.title }}</div>
+        <div class="area2ContentItem">
+          <div v-for="(item2, index2) in item.content" :key="index2" class="contentItem">
+            <div class="text">{{ item2 }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="remind">© 2023 NEW YUE WONG RESTAURANT. ALL RIGHTS RESERVED.</div>
   </div>
   <div class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center pic" v-if="showBigPhoto">
     <div class="absolute right-10 top-5 text-xl font-semibold z-20 text-white cursor-pointer" @click="showBigPhoto = false">CLOSE</div>
@@ -297,5 +336,139 @@ const show = (type, idx) => {
 }
 .pic {
   background-color: rgba(0,0,0,0.7);
+}
+.exploreCShow, .menuCShow, .footerC{
+  display: none;
+}
+
+@media screen and (max-width: 990px) {
+  .titleC{
+    .titleCText{
+      margin-bottom: 30px;
+      span{
+        font-size: 20px;
+      }
+    }
+    .titleCOption{
+      display: none;
+    }
+    img{
+      height: 70vh;
+      object-fit: cover;
+    }
+  }
+  .about{
+    padding: 60px 0;
+    .aboutC{
+      flex-direction: column;
+      .aboutCArea{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .aboutCTitle{
+          font-size: 20px;
+        }
+        .aboutCText{
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  .explore{
+    background-color: #FFD230;
+    padding: 50px;
+    .exploreC{
+      display: none;
+    }
+    .exploreCShow{
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      .exploreCImgList{
+        display: flex;
+        gap: 5px;
+        .list1, .list2{
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          img{
+            width: 145px;
+            height: 168px;
+            object-fit: cover;
+          }
+        }
+        .list2{
+          padding-top: 20px;
+        }
+      }
+    }
+  }
+  .menu{
+    background-color: #FFD230;
+    padding: 50px;
+    .menuC{
+      display: none;
+    }
+    .menuCShow{
+      display: flex;
+      flex-direction: column;
+      .title{
+        transform: scale(.5);
+      }
+    }
+  }
+  .mail{
+    background-color: #fff;
+    flex-direction: column;
+    padding: 0 50px;
+    gap: 20px;
+    .input{
+      width: 90%;
+    }
+  }
+  .igFollow, .footer{
+    display: none;
+  }
+  .footerC{
+    background-color: #FFD230;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0;
+    img{
+      width: 90%;
+      margin-bottom: 20px;
+    }
+    .linkList{
+      display: flex;
+      gap: 10px;
+    }
+    .area{
+      text-align: center;
+      .areaItem{
+        margin-bottom: 25px;
+        .title{
+          font-weight: bold;
+        }
+      }
+    }
+    .area2{
+      text-align: center;
+      .area2Title{
+        font-weight: bold;
+      }
+      .area2Item{
+        margin-bottom: 25px;
+      }
+    }
+    .remind{
+      text-align: center;
+      font-size: 9px;
+    }
+  }
 }
 </style>
