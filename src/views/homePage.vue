@@ -3,6 +3,8 @@ import { ref, onMounted, reactive, computed } from 'vue'
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import { getAssetsFile } from '@/utils/commonUse'
+import emailjs from '@emailjs/browser'
+import { ElMessage } from 'element-plus'
 components: {
   Carousel,
   Slide,
@@ -65,34 +67,82 @@ const show = (type, idx) => {
   showBigPhoto.value = true
   p.value = type + idx.toString()
 }
+const showHamburger = ref(false)
+const scrollTo = (id) => {
+  let targetId = id
+
+  const element = document.getElementById(targetId)
+  showHamburger.value = false
+  
+  if(element){
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - 95;
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+}
+const sendEmail = () => {
+  // 檢查 email 是否為空
+  if (!email.value) {
+    ElMessage.error('Please enter your email address')
+    return
+  }
+
+  // 使用正則表達式檢查 email 格式
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(email.value)) {
+    ElMessage.error('Please enter a valid email address')
+    return
+  }
+  const mailData = {
+    userMail: email.value
+  }
+  emailjs.send('service_0v76l68', 'template_v0ex4o7', mailData, 'nxnbY0R-LdL_kvTzg').then(() => {
+    email.value = ''
+    ElMessage({
+      message: 'Email sent successfully',
+      type: 'success',
+    })
+  })
+} 
 </script>
 <template>
-  <div class="w-screen bg-[#FFD230] flex flex-col pt-[100px] items-center justify-end">
-    <div class="flex flex-col items-center titleC">
-      <div class="font-bold text-[64px] flex flex-col items-center titleCText">
-        <span>NEW YUE WONG RESTAURANT</span>
+  <div class="w-screen bg-[#FFD230] flex flex-col pt-[100px] items-center justify-end tablet:pt-[74px]">
+    <div class="w-full flex flex-col items-center">
+      <div class="font-bold text-[48px] flex flex-col items-center titleCText tablet:hidden">
         <span>裕旺大饭店</span>
+        <span class="rublk font-[800]">NEW YUE WONG RESTAURANT</span>
       </div>
-      <div class="flex gap-[46px] mt-[30px] mb-[30px] titleCOption">
-        <div v-for="(item, idx) in headerList" :key="idx" class="py-[15px] px-[23px] bg-white rounded-[50px] font-bold cursor-pointer">
+      <div class="w-full h-[74px] font-bold text-[1rem] flex justify-evenly items-center bg-[#ffd230] desktop:hidden tablet:fixed tablet:top-0 tablet:left-0">
+        <div class="flex flex-col font-[600]">
+          <span>裕旺大饭店</span>
+          <span class="rublk font-[800]">NEW YUE WONG RESTAURANT</span>
+        </div>
+        <img src="@/assets/img/menubar.png" @click="showHamburger = true">
+      </div>
+      <div class="flex gap-[46px] mt-[30px] mb-[30px] tablet:hidden">
+        <div v-for="(item, idx) in headerList" :key="idx" class="py-[15px] px-[23px] border-[1px] border-black border-solid rounded-[50px] font-bold cursor-pointer" @click="scrollTo(item.title)">
           {{ item.title }}
         </div>
       </div>
-      <img src="@/assets/img/img1.png" alt="img" class="">
+      <img class="tablet:!h-[228px] object-cover" src="@/assets/img/img1.png" alt="img">
     </div>
   </div>
-  <div class="flex w-screen justify-center pt-[154px] pb-[111px] about">
-    <div class="flex w-[70%] gap-[80px] justify-center aboutC">
-      <img src="@/assets/img/img2.png" alt="img">
-      <div class="w-[40%] aboutCArea">
-        <div class="font-bold text-[32px] mb-[30px] gap-3 flex aboutCTitle">
-          <span>ABOUT</span>
-          <span class="text-[#FFD230]">NYW</span>
+  <div id="ABOUT" class="flex w-screen justify-center pt-[154px] pb-[111px] about">
+    <div class="flex w-[70%] gap-[80px] justify-center aboutC tablet:gap-[3rem]">
+      <img class="object-contain tablet:hidden" src="@/assets/img/img2.png" alt="img">
+      <div class="w-[50%] aboutCArea">
+        <div class="font-[600] text-[32px] mb-[30px] gap-3 flex tablet:text-[24px]">
+          <span class="rublk">About</span>
+          <span class="text-[#FFD230] rublk">New Yue Wong</span>
         </div>
-        <div class="text-[20px] leading-loose aboutCText">
+        <div class="rublk text-[24px] leading-loose tablet:text-[15px] tablet:w-[80%] tablet:text-center">
           Welcome to New Yue Wong in NYC's Chinatown since 2011! Try our famous Peking Duck—crispy, succulent, and full of authentic flavor. Our spot blends tradition with innovation for a memorable dining experience that captures the spirit of Chinatown in every delicious bite!
         </div>
-    </div>
+      </div>
+      <img class="desktop:hidden object-contain h-[171px]" src="@/assets/img/img2.png" alt="img">
     </div>
   </div>
   <div class="flex w-screen justify-center pt-[154px] pb-[111px] explore">
@@ -149,22 +199,28 @@ const show = (type, idx) => {
       <img src="../assets/img/menu/menu1.jpg" alt="">
     </div>
   </div>
-  <div class="bg-[#FFD230] w-screen h-[320px] justify-center items-center flex gap-[80px] mail">
-    <div class="flex flex-col items-center">
-      <span>Stay savory!</span>
-      <span>Subscribe for exclusive updates.</span>
+  <div class="bg-[#FFD230] w-full h-[364px] items-center flex tablet:flex-col tablet:h-full">
+    <div class="w-[35%] h-full tablet:w-full tablet:h-[254px]">
+      <img class="w-full h-full object-cover" src="@/assets/img/emailBanner1.jpg" alt="">
     </div>
-    <div class="flex input">
-      <el-input
-        v-model="email"
-        placeholder="Email"
-      />
-      <div class="send">
-        <img src="@/assets/img/arrow.png" alt="arrow">
+    <div class="w-[65%] h-full flex justify-center items-center flex-col gap-[1rem] bg-[linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url('@/assets/img/emailBanner2.jpg')] bg-center tablet:w-full tablet:h-[279px]">
+      <div class="flex flex-col items-center text-white text-[20px] font-[500]">
+        <span>Stay savory!</span>
+        <span>Subscribe for exclusive updates.</span>
+      </div>
+      <div class="flex input w-full justify-center">
+        <el-input
+          v-model="email"
+          placeholder="Email"
+          class="tablet:!w-[70%]"
+        />
+        <div class="send" @click="sendEmail">
+          <img src="@/assets/img/arrowWhite.png" alt="arrow">
+        </div>
       </div>
     </div>
   </div>
-  <div class="flex w-screen justify-center pt-[154px] pb-[111px] igFollow">
+  <!-- <div class="flex w-screen justify-center pt-[154px] pb-[111px] igFollow">
     <div class="flex w-[70%] gap-[80px] justify-center items-center flex-col">
       <div class="flex font-bold text-[36px]">
         <span>Follow</span>
@@ -177,65 +233,76 @@ const show = (type, idx) => {
         <img src="@/assets/img/imgb4.png">
       </div>
     </div>
-  </div>
-  <div class="w-screen flex footer">
-    <img class="footerImg" src="@/assets/img/footer.png" alt="">
-    <div class="bg-[#FFD230] w-full px-[74px] py-[98px] footerContent">
-      <div class="content">
-        <div class="area">
-          <div v-for="(item, index) in footerList1" :key="index" class="areaItem">
-            <div class="title">{{ item.title }}</div>
-            <div class="text" v-html="item.content" />
+  </div> -->
+  <div id="CONTACT">
+    <div class="w-full flex footer">
+      <div class="bg-[#FFD230] w-full px-[25%] py-[98px] flex flex-col">
+        <div class="content flex justify-between">
+          <div class="flex flex-col gap-[22px]">
+            <div v-for="(item, index) in footerList1" :key="index" class="flex flex-col gap-[7px]">
+              <div class="rublk text-[18px] font-[600]">{{ item.title }}</div>
+              <div class="rublk text-[14px] font-[400]" v-html="item.content" />
+            </div>
           </div>
-        </div>
-        <div class="area2">
-          <div class="area2Title">Opening Hours</div>
-          <div v-for="(item, index) in footerList2" :key="index"  class="area2Item">
-            <div class="title">{{ item.title }}</div>
-            <div class="area2ContentItem">
-              <div v-for="(item2, index2) in item.content" :key="index2" class="contentItem">
-                <div class="text">{{ item2 }}</div>
+          <div class="flex flex-col gap-[21px]">
+            <div class="rublk text-[18px] font-[600]">Opening Hours</div>
+            <div v-for="(item, index) in footerList2" :key="index"  class="flex gap-[3rem]">
+              <div class="title">{{ item.title }}</div>
+              <div class="area2ContentItem">
+                <div v-for="(item2, index2) in item.content" :key="index2" class="contentItem">
+                  <div class="rublk text-[14px] font-[400]">{{ item2 }}</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="link">
-        <div class="linkList cursor-pointer">
-          <img @click="goOutWeb(index)" v-for="(item, index) in iconList" :key="index" :src="item.img" alt="">
+        <div class="flex items-center justify-between mt-[21px]">
+          <div class="flex gap-[9px] cursor-pointer">
+            <img @click="goOutWeb(index)" v-for="(item, index) in iconList" :key="index" :src="item.img" alt="">
+          </div>
+          <div class="text-[#818181] text-[14px] font-[300]">© 2023 NEW YUE WONG RESTAURANT. ALL RIGHTS RESERVED.</div>
         </div>
-        <div class="remind">© 2023 NEW YUE WONG RESTAURANT. ALL RIGHTS RESERVED.</div>
       </div>
     </div>
-  </div>
-  <div class="footerC">
-    <img class="footerImg" src="@/assets/img/footer.png" alt="">
-    <div class="linkList cursor-pointer">
-      <img @click="goOutWeb(index)" v-for="(item, index) in iconList" :key="index" :src="item.img" alt="">
-    </div>
-    <div class="area">
-      <div v-for="(item, index) in footerList1" :key="index" class="areaItem">
-        <div class="title">{{ item.title }}</div>
-        <div class="text" v-html="item.content" />
+    <div class="footerC">
+      <div class="area">
+        <div v-for="(item, index) in footerList1" :key="index" class="areaItem">
+          <div class="title">{{ item.title }}</div>
+          <div class="text" v-html="item.content" />
+        </div>
       </div>
-    </div>
-    <div class="area2">
-      <div class="area2Title">Opening Hours</div>
-      <div v-for="(item, index) in footerList2" :key="index"  class="area2Item">
-        <div class="title">{{ item.title }}</div>
-        <div class="area2ContentItem">
-          <div v-for="(item2, index2) in item.content" :key="index2" class="contentItem">
-            <div class="text">{{ item2 }}</div>
+      <div class="area2">
+        <div class="area2Title">Opening Hours</div>
+        <div v-for="(item, index) in footerList2" :key="index"  class="area2Item">
+          <div class="title">{{ item.title }}</div>
+          <div class="area2ContentItem">
+            <div v-for="(item2, index2) in item.content" :key="index2" class="contentItem">
+              <div class="text">{{ item2 }}</div>
+            </div>
           </div>
         </div>
       </div>
+      <div class="linkList cursor-pointer">
+        <img @click="goOutWeb(index)" v-for="(item, index) in iconList" :key="index" :src="item.img" alt="">
+      </div>
+      <div class="text-[13px] text-[#818181]">© 2023 NEW YUE WONG RESTAURANT.<br> ALL RIGHTS RESERVED. x WAG Marketing</div>
     </div>
-    <div class="remind">© 2023 NEW YUE WONG RESTAURANT. ALL RIGHTS RESERVED.</div>
   </div>
   <div class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center pic" v-if="showBigPhoto">
     <div class="absolute right-10 top-5 text-xl font-semibold z-20 text-white cursor-pointer" @click="showBigPhoto = false">CLOSE</div>
     <img :src="nowPic" class="w-[70vw] h-[80vh] object-contain">
   </div>
+  <Transition name="slide-fade">
+    <div class="w-full h-full fixed top-0 left-0 bg-white z-50 flex items-center pt-[75px] flex-col"
+      v-if="showHamburger">
+      <img src="@/assets/img/close.svg" class="fixed top-[16px] right-4 cursor-pointer desktop:hidden"
+        @click="showHamburger = false">
+      <div class="flex gap-[24px] text-text-black flex-col items-center">
+        <div v-for="(link, idx) in headerList" :key="idx" @click="scrollTo(link.title)" class="cursor-pointer teko">{{ link.title }}
+        </div>
+      </div>
+    </div>
+  </Transition>
 </template>
 <style lang="scss" scoped>
 :deep(.el-input) {
@@ -244,89 +311,24 @@ const show = (type, idx) => {
     border-radius: 0px;
     box-shadow: none;
     background-color: transparent;
-    border: 2px solid black;
+    border: 2px solid white;
   }
+}
+:deep(.el-input__inner){
+  color: white;
 }
 .send {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top: 2px solid black;
-  border-right: 2px solid black;
-  border-bottom: 2px solid black;
+  border-top: 2px solid white;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
   padding: 10px;
 }
 .footerImg{
   width: 40%;
   object-fit: cover;
-}
-.footerContent{
-  display: flex;
-  flex-direction: column;
-
-  .content{
-    display: flex;
-    justify-content: space-evenly;
-    .area{
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 40%;
-      .areaItem{
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        .title{
-          font-size: 20px;
-          font-weight: bold
-        }
-      }
-    }
-    .area2{
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 60%;
-      .area2Title{
-        font-size: 20px;
-        font-weight: bold
-      }
-      .area2Item{
-        display: flex;
-        align-items: center;
-        .area2ContentItem{
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          .contentItem{
-            display: flex;
-            
-          }
-        }
-        .title{
-          font-size: 18px;
-          font-weight: 600;
-          width: 100px;
-        }
-        .text{
-          font-size: 14px;
-        }
-      }
-    }
-  }
-  .link{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 30px;
-    .linkList{
-      display: flex;
-      gap: 10px;
-    }
-    .remind{
-      font-size: 14px;
-    }
-  }
 }
 :deep(.carousel__prev) {
   left: -45px;
@@ -342,21 +344,6 @@ const show = (type, idx) => {
 }
 
 @media screen and (max-width: 990px) {
-  .titleC{
-    .titleCText{
-      margin-bottom: 30px;
-      span{
-        font-size: 20px;
-      }
-    }
-    .titleCOption{
-      display: none;
-    }
-    img{
-      height: 70vh;
-      object-fit: cover;
-    }
-  }
   .about{
     padding: 60px 0;
     .aboutC{
@@ -367,12 +354,6 @@ const show = (type, idx) => {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        .aboutCTitle{
-          font-size: 20px;
-        }
-        .aboutCText{
-          font-size: 16px;
-        }
       }
     }
   }
@@ -419,15 +400,6 @@ const show = (type, idx) => {
       }
     }
   }
-  .mail{
-    background-color: #fff;
-    flex-direction: column;
-    padding: 0 50px;
-    gap: 20px;
-    .input{
-      width: 90%;
-    }
-  }
   .igFollow, .footer{
     display: none;
   }
@@ -438,7 +410,7 @@ const show = (type, idx) => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 30px 0;
+    padding: 75px 0;
     img{
       width: 90%;
       margin-bottom: 20px;
@@ -465,10 +437,22 @@ const show = (type, idx) => {
         margin-bottom: 25px;
       }
     }
-    .remind{
-      text-align: center;
-      font-size: 9px;
-    }
   }
+}
+.rublk{
+  font-family: "Rublk", sans-serif;
+}
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }
 </style>
