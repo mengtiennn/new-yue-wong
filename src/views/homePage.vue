@@ -59,13 +59,45 @@ const goOutWeb = (index) => {
 }
 const email = ref('')
 const showBigPhoto = ref(false)
-const p = ref('')
+const showBigPhoto2 = ref(false)
+const nowIndex = ref(0)
 const nowPic = computed(() => {
-  return getAssetsFile(`${p.value}.png`)
+  return getAssetsFile(`m${nowIndex.value}.png`)
+})
+const nowIndex2 = ref(0)
+const nowPic2 = computed(() => {
+  return getAssetsFile(`r${nowIndex2.value}.jpeg`)
 })
 const show = (type, idx) => {
   showBigPhoto.value = true
-  p.value = type + idx.toString()
+  nowIndex.value = idx
+}
+const show2 = (type, idx) => {
+  console.log(idx)
+  showBigPhoto2.value = true
+  nowIndex2.value = idx
+}
+const changePicIndex = (type) => {
+  if (nowIndex.value == 11 && type == 'go') {
+    nowIndex.value = 1
+    return
+  } else if ((nowIndex.value == 1 || nowIndex.value == 0) && type == 'back') {
+    console.log('yoyoy', nowIndex.value)
+    nowIndex.value = 11
+    return
+  }
+  type == 'back' ? nowIndex.value -= 1 : nowIndex.value += 1
+}
+const changePicIndex2 = (type) => {
+  if (nowIndex2.value == 6 && type == 'go') {
+    nowIndex2.value = 1
+    return
+  } else if ((nowIndex2.value == 1 || nowIndex2.value == 0) && type == 'back') {
+    console.log('yoyoy', nowIndex2.value)
+    nowIndex2.value = 6
+    return
+  }
+  type == 'back' ? nowIndex2.value -= 1 : nowIndex2.value += 1
 }
 const showHamburger = ref(false)
 const scrollTo = (id) => {
@@ -107,6 +139,34 @@ const sendEmail = () => {
     })
   })
 } 
+const breakpoints = {
+  // 700px and up
+  700: {
+    itemsToShow: 3,
+    snapAlign: 'center',
+  },
+  // 1024 and up
+  1290: {
+    itemsToShow: 4,
+    snapAlign: 'start',
+  },
+}
+const breakpoints2 = {
+  // 700px and up
+  700: {
+    itemsToShow: 2.5,
+    snapAlign: 'start',
+  },
+  // 1024 and up
+  1290: {
+    itemsToShow: 4,
+    snapAlign: 'start',
+  },
+}
+const config = {
+  itemsToShow: 1.5,
+  wrapAround: true,
+};
 </script>
 <template>
   <div class="w-screen bg-[#FFD230] flex flex-col pt-[100px] items-center justify-end tablet:pt-[74px]">
@@ -145,58 +205,55 @@ const sendEmail = () => {
       <img class="desktop:hidden object-contain h-[171px]" src="@/assets/img/img2.png" alt="img">
     </div>
   </div>
-  <div class="flex w-screen justify-center pt-[154px] pb-[111px] explore">
-    <div class="flex w-[70%] gap-[80px] justify-center items-center exploreC">
-      <div>
-        <img src="@/assets/img/text1.png" alt="img">
-        <div class="bg-[#FFD230] text-[24px] font-bold py-[13px] px-[20px] text-center mt-[20px]">See More</div>
-      </div>
-      <div class="w-[60%] bg-[#FFD230] p-[49px]">
-        <Carousel :items-to-show="2.5" :wrap-around="true">
-          <Slide v-for="slide in 6" :key="slide" @click="show('c', slide)">
-            <div class="carousel__item">
-              <img :src="getAssetsFile(`c${slide}.png`)" class="w-[200px]">
-            </div>
-          </Slide>
-          <template #addons>
-            <Navigation />
-          </template>
-        </Carousel>
-      </div>
+  <!-- Serving food 電腦版 -->
+  <div class="bg-[#FFD230] pt-[167px] pb-[184px] flex justify-center gap-[100px] items-center tablet:hidden">
+    <div class="flex flex-col items-center">
+      <span class="font-[600] text-[32px] rublk">Serving food</span>
+      <span class="font-[600] text-[32px] rublk">from the heart</span>
     </div>
-    <div class="exploreCShow">
-      <img src="../assets/img/text3.png" alt="">
-      <div class="exploreCImgList">
-        <div class="list1">
-          <img v-for="item in 3" :key="item" :src="getAssetsFile(`menu/left${item}.jpg`)" alt="">
-        </div>
-        <div class="list2">
-          <img v-for="item in 3" :key="item" :src="getAssetsFile(`menu/right${item}.jpg`)" alt="">
-        </div>
-      </div>
+    <div class="w-[623px]">
+      <Carousel :snapAlign="'center'" :breakpoints="breakpoints" :wrapAround="true">
+        <Slide v-for="r in 6" :key="r">
+          <div class="carousel__item" @click="show2('r', r)">
+            <!-- <img :src="getAssetsFile(`carousel/c${slide}.png`)"
+              class="w-[220px] h-[281px] object-cover cursor-pointer"> -->
+            <img :src="getAssetsFile(`r${r}.jpeg`)" alt="" class="w-[121px] h-[323px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
+          </div>
+        </Slide>
+        <template #addons>
+          <Navigation />
+        </template>
+      </Carousel>
     </div>
   </div>
-  <div class="flex w-screen justify-center pt-[154px] pb-[111px] menu">
-    <div class="flex w-[70%] gap-[80px] justify-center items-center menuC">
-      <div class="bg-[#FFD230] p-[30px] w-[60%]">
-        <Carousel :items-to-show="2.5" :wrap-around="true">
-          <Slide v-for="slide in 11" :key="slide" @click="show('m', slide)">
-            <div class="carousel__item">
-              <img :src="getAssetsFile(`m${slide}.png`)" class="w-[200px]">
-            </div>
-          </Slide>
-          <template #addons>
-            <Navigation />
-          </template>
-        </Carousel>
-      </div>
-      <div>
-        <img src="@/assets/img/text2.png" alt="img">
-      </div>
+  <!-- Serving food 手機版 -->
+  <div class="bg-[#FFD230] pt-[71px] pb-[68px] flex-col items-center hidden tablet:flex">
+    <div class="flex flex-col items-center mb-[100px]">
+      <span class="font-[600] text-[24px] rublk">Serving food</span>
+      <span class="font-[600] text-[24px] rublk">from the heart</span>
     </div>
-    <div class="menuCShow">
-      <img class="title" src="../assets/img/text4.png" alt="">
-      <img src="../assets/img/menu/menu1.jpg" alt="">
+    <div class="flex gap-[12px] w-full justify-center">
+      <img v-for="r in 4" :src="getAssetsFile(`r${r}.jpeg`)" alt="" class="w-[21%] h-[253px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
+    </div>
+  </div>
+  <!-- MENU 電腦版 -->
+  <div class="w-full pt-[133px] pb-[161px] bg-white flex flex-col items-center tablet:hidden">
+    <span class="rublk font-[600] text-[32px] mb-[55px]">MENU</span>
+    <div class="flex flex-wrap gap-[33px] w-[60%] justify-center">
+      <img v-for="m in 11" :src="getAssetsFile(`m${m}.png`)" alt="" class="w-[180px] cursor-pointer" @click="show('m', m)">
+    </div>
+  </div>
+  <!-- MENU 手機班 -->
+  <div class="bg-white pt-[57px] pb-[92px] flex-col items-center hidden tablet:flex">
+    <span class="rublk font-[600] text-[24px] mb-[55px]">MENU</span>
+    <div class="w-full">
+      <Carousel v-bind="config">
+        <Slide v-for="m in 11" :key="m">
+          <div class="carousel__item" @click="show('m', m)">
+            <img :src="getAssetsFile(`m${m}.png`)" alt="" class="w-[217px] h-[242px] object-contain cursor-pointer">
+          </div>
+        </Slide>
+      </Carousel>
     </div>
   </div>
   <div class="bg-[#FFD230] w-full h-[364px] items-center flex tablet:flex-col tablet:h-full">
@@ -288,10 +345,6 @@ const sendEmail = () => {
       <div class="text-[13px] text-[#818181]">© 2023 NEW YUE WONG RESTAURANT.<br> ALL RIGHTS RESERVED. x WAG Marketing</div>
     </div>
   </div>
-  <div class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center pic" v-if="showBigPhoto">
-    <div class="absolute right-10 top-5 text-xl font-semibold z-20 text-white cursor-pointer" @click="showBigPhoto = false">CLOSE</div>
-    <img :src="nowPic" class="w-[70vw] h-[80vh] object-contain">
-  </div>
   <Transition name="slide-fade">
     <div class="w-full h-full fixed top-0 left-0 bg-white z-50 flex items-center pt-[75px] flex-col"
       v-if="showHamburger">
@@ -303,6 +356,36 @@ const sendEmail = () => {
       </div>
     </div>
   </Transition>
+  <div class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[1000]" v-if="showBigPhoto">
+    <div class="w-full h-full pic absolute left-0 top-0 z-10" @click="showBigPhoto = false"></div>
+    <div class="absolute right-10 top-5 text-xl font-semibold z-20 text-white cursor-pointer"
+      @click="showBigPhoto = false">
+      <img src="@/assets/icon/closewhite.svg" alt="">
+    </div>
+    <img src="@/assets/img/ca.png"
+      class="rotate-180 w-[50px] absolute top-[50%] left-[20%] translate-y-[-50%] cursor-pointer tablet:left-0 z-20"
+      @click="changePicIndex('back')">
+    <img :src="nowPic"
+      class="h-[80vh] object-contain absolute left-[50%] translate-x-[-50%] z-20 tablet:w-[70vw] tablet:h-auto">
+    <img src="@/assets/img/ca.png"
+      class="w-[50px] absolute top-[50%] right-[20%] translate-y-[-50%] cursor-pointer tablet:right-0 z-20"
+      @click="changePicIndex('go')">
+  </div>
+  <div class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[1000]" v-if="showBigPhoto2">
+    <div class="w-full h-full pic absolute left-0 top-0 z-10" @click="showBigPhoto2 = false"></div>
+    <div class="absolute right-10 top-5 text-xl font-semibold z-20 text-white cursor-pointer"
+      @click="showBigPhoto2 = false">
+      <img src="@/assets/icon/closewhite.svg" alt="">
+    </div>
+    <img src="@/assets/img/ca.png"
+      class="rotate-180 w-[50px] absolute top-[50%] left-[20%] translate-y-[-50%] cursor-pointer tablet:left-0 z-20"
+      @click="changePicIndex2('back')">
+    <img :src="nowPic2"
+      class="h-[80vh] object-contain absolute left-[50%] translate-x-[-50%] z-20 tablet:w-[70vw] tablet:h-auto">
+    <img src="@/assets/img/ca.png"
+      class="w-[50px] absolute top-[50%] right-[20%] translate-y-[-50%] cursor-pointer tablet:right-0 z-20"
+      @click="changePicIndex2('go')">
+  </div>
 </template>
 <style lang="scss" scoped>
 :deep(.el-input) {
