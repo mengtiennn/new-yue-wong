@@ -108,7 +108,7 @@ const scrollTo = (id) => {
   
   if(element){
     const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - 95;
+    const offsetPosition = elementPosition + window.pageYOffset - 70;
     window.scrollTo({
       top: offsetPosition,
       behavior: 'smooth'
@@ -169,13 +169,13 @@ const config = {
 };
 </script>
 <template>
-  <div class="w-screen bg-[#FFD230] flex flex-col pt-[100px] items-center justify-end tablet:pt-[74px]">
+  <div class="w-full bg-[#FFD230] flex flex-col pt-[100px] items-center justify-end tablet:pt-[74px]">
     <div class="w-full flex flex-col items-center">
       <div class="font-bold text-[48px] flex flex-col items-center titleCText tablet:hidden">
         <span>裕旺大饭店</span>
         <span class="rublk font-[800]">NEW YUE WONG RESTAURANT</span>
       </div>
-      <div class="w-full h-[74px] font-bold text-[1rem] flex justify-evenly items-center bg-[#ffd230] desktop:hidden tablet:fixed tablet:top-0 tablet:left-0">
+      <div class="w-full h-[74px] font-bold text-[1rem] flex justify-evenly items-center bg-[#ffd230] desktop:hidden mac:hidden laptop:hidden tablet:fixed tablet:top-0 tablet:left-0 z-50">
         <div class="flex flex-col font-[600]">
           <span>裕旺大饭店</span>
           <span class="rublk font-[800]">NEW YUE WONG RESTAURANT</span>
@@ -190,7 +190,7 @@ const config = {
       <img class="tablet:!h-[228px] object-cover" src="@/assets/img/img1.png" alt="img">
     </div>
   </div>
-  <div id="ABOUT" class="flex w-screen justify-center pt-[154px] pb-[111px] about">
+  <div id="ABOUT" class="flex w-full justify-center pt-[154px] pb-[111px] about">
     <div class="flex w-[70%] gap-[80px] justify-center aboutC tablet:gap-[3rem]">
       <img class="object-contain tablet:hidden" src="@/assets/img/img2.png" alt="img">
       <div class="w-[50%] aboutCArea">
@@ -202,58 +202,62 @@ const config = {
           Welcome to New Yue Wong in NYC's Chinatown since 2011! Try our famous Peking Duck—crispy, succulent, and full of authentic flavor. Our spot blends tradition with innovation for a memorable dining experience that captures the spirit of Chinatown in every delicious bite!
         </div>
       </div>
-      <img class="desktop:hidden object-contain h-[171px]" src="@/assets/img/img2.png" alt="img">
+      <img class="desktop:hidden mac:hidden laptop:hidden object-contain h-[171px]" src="@/assets/img/img2.png" alt="img">
     </div>
   </div>
-  <!-- Serving food 電腦版 -->
-  <div class="bg-[#FFD230] pt-[167px] pb-[184px] flex justify-center gap-[100px] items-center tablet:hidden">
-    <div class="flex flex-col items-center">
-      <span class="font-[600] text-[32px] rublk">Serving food</span>
-      <span class="font-[600] text-[32px] rublk">from the heart</span>
+  <div id="GALLERY">
+    <!-- Serving food 電腦版 -->
+    <div class="bg-[#FFD230] pt-[167px] pb-[184px] flex justify-center gap-[100px] items-center tablet:hidden">
+      <div class="flex flex-col items-center">
+        <span class="font-[600] text-[32px] rublk">Serving food</span>
+        <span class="font-[600] text-[32px] rublk">from the heart</span>
+      </div>
+      <div class="w-[623px]">
+        <Carousel :snapAlign="'center'" :breakpoints="breakpoints" :wrapAround="true">
+          <Slide v-for="r in 6" :key="r">
+            <div class="carousel__item" @click="show2('r', r)">
+              <!-- <img :src="getAssetsFile(`carousel/c${slide}.png`)"
+                class="w-[220px] h-[281px] object-cover cursor-pointer"> -->
+              <img :src="getAssetsFile(`r${r}.jpeg`)" alt="" class="w-[121px] h-[323px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
+            </div>
+          </Slide>
+          <template #addons>
+            <Navigation />
+          </template>
+        </Carousel>
+      </div>
     </div>
-    <div class="w-[623px]">
-      <Carousel :snapAlign="'center'" :breakpoints="breakpoints" :wrapAround="true">
-        <Slide v-for="r in 6" :key="r">
-          <div class="carousel__item" @click="show2('r', r)">
-            <!-- <img :src="getAssetsFile(`carousel/c${slide}.png`)"
-              class="w-[220px] h-[281px] object-cover cursor-pointer"> -->
-            <img :src="getAssetsFile(`r${r}.jpeg`)" alt="" class="w-[121px] h-[323px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
-          </div>
-        </Slide>
-        <template #addons>
-          <Navigation />
-        </template>
-      </Carousel>
-    </div>
-  </div>
-  <!-- Serving food 手機版 -->
-  <div class="bg-[#FFD230] pt-[71px] pb-[68px] flex-col items-center hidden tablet:flex">
-    <div class="flex flex-col items-center mb-[100px]">
-      <span class="font-[600] text-[24px] rublk">Serving food</span>
-      <span class="font-[600] text-[24px] rublk">from the heart</span>
-    </div>
-    <div class="flex gap-[12px] w-full justify-center">
-      <img v-for="r in 4" :src="getAssetsFile(`r${r}.jpeg`)" alt="" class="w-[21%] h-[253px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
-    </div>
-  </div>
-  <!-- MENU 電腦版 -->
-  <div class="w-full pt-[133px] pb-[161px] bg-white flex flex-col items-center tablet:hidden">
-    <span class="rublk font-[600] text-[32px] mb-[55px]">MENU</span>
-    <div class="flex flex-wrap gap-[33px] w-[60%] justify-center">
-      <img v-for="m in 11" :src="getAssetsFile(`m${m}.png`)" alt="" class="w-[180px] cursor-pointer" @click="show('m', m)">
+    <!-- Serving food 手機版 -->
+    <div class="bg-[#FFD230] pt-[71px] pb-[68px] flex-col items-center hidden tablet:flex">
+      <div class="flex flex-col items-center mb-[100px]">
+        <span class="font-[600] text-[24px] rublk">Serving food</span>
+        <span class="font-[600] text-[24px] rublk">from the heart</span>
+      </div>
+      <div class="flex gap-[12px] w-full justify-center">
+        <img v-for="r in 4" :src="getAssetsFile(`r${r}.jpeg`)" alt="" class="w-[21%] h-[253px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
+      </div>
     </div>
   </div>
-  <!-- MENU 手機班 -->
-  <div class="bg-white pt-[57px] pb-[92px] flex-col items-center hidden tablet:flex">
-    <span class="rublk font-[600] text-[24px] mb-[55px]">MENU</span>
-    <div class="w-full">
-      <Carousel v-bind="config">
-        <Slide v-for="m in 11" :key="m">
-          <div class="carousel__item" @click="show('m', m)">
-            <img :src="getAssetsFile(`m${m}.png`)" alt="" class="w-[217px] h-[242px] object-contain cursor-pointer">
-          </div>
-        </Slide>
-      </Carousel>
+  <div id="MENU">
+    <!-- MENU 電腦版 -->
+    <div class="w-full pt-[133px] pb-[161px] bg-white flex flex-col items-center tablet:hidden">
+      <span class="rublk font-[600] text-[32px] mb-[55px]">MENU</span>
+      <div class="flex flex-wrap gap-[33px] w-[60%] justify-center">
+        <img v-for="m in 11" :src="getAssetsFile(`m${m}.png`)" alt="" class="w-[180px] cursor-pointer" @click="show('m', m)">
+      </div>
+    </div>
+    <!-- MENU 手機班 -->
+    <div class="bg-white pt-[57px] pb-[92px] flex-col items-center hidden tablet:flex">
+      <span class="rublk font-[600] text-[24px] mb-[55px]">MENU</span>
+      <div class="w-full">
+        <Carousel v-bind="config">
+          <Slide v-for="m in 11" :key="m">
+            <div class="carousel__item" @click="show('m', m)">
+              <img :src="getAssetsFile(`m${m}.png`)" alt="" class="w-[217px] h-[242px] object-contain cursor-pointer">
+            </div>
+          </Slide>
+        </Carousel>
+      </div>
     </div>
   </div>
   <div class="bg-[#FFD230] w-full h-[364px] items-center flex tablet:flex-col tablet:h-full">
@@ -488,7 +492,7 @@ const config = {
   }
   .footerC{
     background-color: #FFD230;
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
