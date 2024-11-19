@@ -187,7 +187,7 @@ const config = {
           {{ item.title }}
         </div>
       </div>
-      <img class="tablet:!h-[228px] object-cover" src="@/assets/img/img1.png" alt="img">
+      <img class="tablet:!h-[228px] tablet:w-full object-cover" src="@/assets/img/img1.png" alt="img">
     </div>
   </div>
   <div id="ABOUT" class="flex w-full justify-center pt-[154px] pb-[111px] about">
@@ -198,8 +198,8 @@ const config = {
           <span class="rublk">About</span>
           <span class="text-[#FFD230] rublk">New Yue Wong</span>
         </div>
-        <div class="rublk text-[24px] leading-loose tablet:text-[15px] tablet:w-[80%] tablet:text-center">
-          Welcome to New Yue Wong in NYC's Chinatown since 2011! Try our famous Peking Duck—crispy, succulent, and full of authentic flavor. Our spot blends tradition with innovation for a memorable dining experience that captures the spirit of Chinatown in every delicious bite!
+        <div class="rublk text-[24px] leading-loose tablet:text-[15px] tablet:w-[85%] tablet:text-center break-all">
+            Welcome to New Yue Wong in NYC's Chinatown since 2011! Try our famous Peking Duck—crispy, succulent, and full of authentic flavor. Our spot blends tradition with innovation for a memorable dining experience that captures the spirit of Chinatown in every delicious bite!
         </div>
       </div>
       <img class="desktop:hidden mac:hidden laptop:hidden object-contain h-[171px]" src="@/assets/img/img2.png" alt="img">
@@ -321,7 +321,7 @@ const config = {
           <div class="flex gap-[9px] cursor-pointer">
             <img @click="goOutWeb(index)" v-for="(item, index) in iconList" :key="index" :src="item.img" alt="">
           </div>
-          <div class="text-[#818181] text-[14px] font-[300]">© 2023 NEW YUE WONG RESTAURANT. ALL RIGHTS RESERVED.</div>
+          <div class="text-[#818181] text-[14px] font-[300]">© 2024 NEW YUE WONG RESTAURANT.<br> ALL RIGHTS RESERVED. x WAG Marketing</div>
         </div>
       </div>
     </div>
@@ -346,7 +346,7 @@ const config = {
       <div class="linkList cursor-pointer">
         <img @click="goOutWeb(index)" v-for="(item, index) in iconList" :key="index" :src="item.img" alt="">
       </div>
-      <div class="text-[13px] text-[#818181]">© 2023 NEW YUE WONG RESTAURANT.<br> ALL RIGHTS RESERVED. x WAG Marketing</div>
+      <div class="text-[13px] text-[#818181]">© 2024 NEW YUE WONG RESTAURANT.<br> ALL RIGHTS RESERVED. x WAG Marketing</div>
     </div>
   </div>
   <Transition name="slide-fade">
