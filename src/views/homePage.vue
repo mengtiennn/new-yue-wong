@@ -234,7 +234,7 @@ const config = {
         <span class="font-[600] text-[24px] rublk">from the heart</span>
       </div>
       <div class="flex gap-[12px] w-full justify-center">
-        <img v-for="r in 4" :src="getAssetsFile(`r${r}.jpg`)" alt="" class="w-[21%] h-[253px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
+        <img @click="show2('r', r)" v-for="r in 4" :src="getAssetsFile(`r${r}.jpg`)" alt="" class="w-[21%] h-[253px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
       </div>
     </div>
   </div>
