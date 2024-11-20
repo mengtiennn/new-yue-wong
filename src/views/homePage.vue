@@ -66,7 +66,7 @@ const nowPic = computed(() => {
 })
 const nowIndex2 = ref(0)
 const nowPic2 = computed(() => {
-  return getAssetsFile(`r${nowIndex2.value}.jpeg`)
+  return getAssetsFile(`r${nowIndex2.value}.jpg`)
 })
 const show = (type, idx) => {
   showBigPhoto.value = true
@@ -218,7 +218,7 @@ const config = {
             <div class="carousel__item" @click="show2('r', r)">
               <!-- <img :src="getAssetsFile(`carousel/c${slide}.png`)"
                 class="w-[220px] h-[281px] object-cover cursor-pointer"> -->
-              <img :src="getAssetsFile(`r${r}.jpeg`)" alt="" class="w-[121px] h-[323px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
+              <img :src="getAssetsFile(`r${r}.jpg`)" alt="" class="w-[121px] h-[323px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
             </div>
           </Slide>
           <template #addons>
@@ -234,7 +234,7 @@ const config = {
         <span class="font-[600] text-[24px] rublk">from the heart</span>
       </div>
       <div class="flex gap-[12px] w-full justify-center">
-        <img v-for="r in 4" :src="getAssetsFile(`r${r}.jpeg`)" alt="" class="w-[21%] h-[253px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
+        <img v-for="r in 4" :src="getAssetsFile(`r${r}.jpg`)" alt="" class="w-[21%] h-[253px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
       </div>
     </div>
   </div>
