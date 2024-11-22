@@ -153,8 +153,8 @@ const breakpoints = {
 }
 const breakpoints2 = {
   // 700px and up
-  700: {
-    itemsToShow: 2.5,
+  300: {
+    itemsToShow: 4,
     snapAlign: 'start',
   },
   // 1024 and up
@@ -229,12 +229,24 @@ const config = {
     </div>
     <!-- Serving food 手機版 -->
     <div class="bg-[#FFD230] pt-[71px] pb-[68px] flex-col items-center hidden tablet:flex">
-      <div class="flex flex-col items-center mb-[100px]">
+      <div class="flex flex-col items-center mb-[40px]">
         <span class="font-[600] text-[24px] rublk">Serving food</span>
         <span class="font-[600] text-[24px] rublk">from the heart</span>
       </div>
-      <div class="flex gap-[12px] w-full justify-center">
+      <!-- <div class="flex gap-[12px] w-full justify-center">
         <img @click="show2('r', r)" v-for="r in 4" :src="getAssetsFile(`r${r}.jpg`)" alt="" class="w-[21%] h-[253px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
+      </div> -->
+      <div class="w-[calc(100vw-70px)]">
+        <Carousel :snapAlign="'center'" :breakpoints="breakpoints2" :wrapAround="true">
+          <Slide v-for="r in 6" :key="r">
+            <div class="carousel__item" @click="show2('r', r)">
+              <img :src="getAssetsFile(`r${r}.jpg`)" alt="" class="w-[75px] h-[323px] object-cover cursor-pointer" :class="{'translate-y-[-30px]': r%2 == 0, 'translate-y-[30px]': r%2 != 0}">
+            </div>
+          </Slide>
+          <template #addons>
+            <Navigation />
+          </template>
+        </Carousel>
       </div>
     </div>
   </div>
